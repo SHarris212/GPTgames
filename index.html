@@ -17,6 +17,8 @@
       ];
       const rows = 4;
       const cols = 3;
+      const iconWidth = 100;
+      const iconHeight = 100;
       let draggedIcon = null;
 
       function handleDragStart(e) {
@@ -39,18 +41,26 @@
           e.stopPropagation();
         }
         if (draggedIcon !== e.target) {
-          draggedIcon.parentNode.removeChild(draggedIcon);
-          const dropHTML = e.dataTransfer.getData("text/html");
-          e.target.insertAdjacentHTML("beforebegin", dropHTML);
-          const dropIcon = e.target.previousSibling;
-          dropIcon.addEventListener("dragstart", handleDragStart);
-          dropIcon.addEventListener("dragend", handleDragEnd);
+          const dropIcon = e.target;
+          const dropHTML = dropIcon.outerHTML;
+          dropIcon.outerHTML = draggedIcon.outerHTML;
+          draggedIcon.outerHTML = dropHTML;
+          const newDraggedIcon = dropIcon.previousSibling;
+          newDraggedIcon.addEventListener("dragstart", handleDragStart);
+          newDraggedIcon.addEventListener("dragend", handleDragEnd);
+          draggedIcon = newDraggedIcon;
         }
         return false;
       }
 
       function handleDragEnd(e) {
         e.target.classList.remove("dragging");
+        // Snap icon to nearest grid location
+        const iconRect = e.target.getBoundingClientRect();
+        const x = Math.round(iconRect.left / iconWidth) * iconWidth;
+        const y = Math.round(iconRect.top / iconHeight) * iconHeight;
+        e.target.style.left = `${x}px`;
+        e.target.style.top = `${y}px`;
       }
 
       for (let i = 0; i < rows; i++) {
@@ -89,6 +99,9 @@
         width: 100px;
         height: 100px;
         margin: 10px;
+        outline: 2px solid black;
+        position: relative;
+        z-index: 1;
       }
 
       .dragging {
