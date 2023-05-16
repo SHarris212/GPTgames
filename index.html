@@ -5,20 +5,18 @@
   </head>
   <body>
     <div id="grid"></div>
+    <button onclick="replaceRandomIcon()">Replace Random Icon</button>
     <script>
       const grid = document.getElementById("grid");
       const icons = [
         "icon1.png",
         "icon2.png",
-        "icon3.png",
-        "icon4.png",
-        "icon5.png",
-        "icon6.png",
       ];
-      const rows = 4;
-      const cols = 3;
-      const iconWidth = 100;
-      const iconHeight = 100;
+      const rows = 5;
+      const cols = 5;
+      const iconWidth = 32;
+      const iconHeight = 32;
+      const iconMargin = 16;
       let draggedIcon = null;
 
       function handleDragStart(e) {
@@ -63,14 +61,21 @@
         e.target.style.top = `${y}px`;
       }
 
+      function replaceRandomIcon() {
+        const iconElements = document.querySelectorAll(".icon");
+        const randomIndex = Math.floor(Math.random() * iconElements.length);
+        const randomIcon = icons[0]; // Replace with icon1.png
+        const iconElement = iconElements[randomIndex];
+        iconElement.src = `icons/${randomIcon}`;
+      }
+
       for (let i = 0; i < rows; i++) {
         const row = document.createElement("div");
         row.classList.add("row");
 
         for (let j = 0; j < cols; j++) {
           const icon = document.createElement("img");
-          const randomIcon = icons[Math.floor(Math.random() * icons.length)];
-          icon.src = `icons/${randomIcon}`;
+          icon.src = `icons/${icons[1]}`;
           icon.classList.add("icon");
           icon.setAttribute("draggable", true);
           icon.addEventListener("dragstart", handleDragStart);
@@ -96,9 +101,9 @@
       }
 
       .icon {
-        width: 100px;
-        height: 100px;
-        margin: 10px;
+        width: 32px;
+        height: 32px;
+        margin: 16px;
         outline: 2px solid black;
         position: relative;
         z-index: 1;
