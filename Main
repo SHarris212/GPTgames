@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Grid of Icons</title>
+  </head>
+  <body>
+    <div id="grid"></div>
+    <script>
+      const grid = document.getElementById("grid");
+      const icons = [
+        "icon1.png",
+        "icon2.png",
+        "icon3.png",
+        "icon4.png",
+        "icon5.png",
+        "icon6.png",
+      ];
+      const rows = 4;
+      const cols = 3;
+
+      for (let i = 0; i < rows; i++) {
+        const row = document.createElement("div");
+        row.classList.add("row");
+
+        for (let j = 0; j < cols; j++) {
+          const icon = document.createElement("img");
+          const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+          icon.src = randomIcon;
+          icon.classList.add("icon");
+          row.appendChild(icon);
+        }
+
+        grid.appendChild(row);
+      }
+    </script>
+    <style>
+      #grid {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-around;
+        margin: 10px;
+      }
+
+      .icon {
+        width: 100px;
+        height: 100px;
+        margin: 10px;
+      }
+    </style>
+  </body>
+</html>
