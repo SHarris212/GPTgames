@@ -8,15 +8,17 @@
     <script>
       const grid = document.getElementById("grid");
       const icons = [
-        "icons/icon1.png",
-        "icons/icon2.png",
-        "icons/icon3.png",
-        "icons/icon4.png",
-        "icons/icon5.png",
-        "icons/icon6.png",
+        "icon1.png",
+        "icon2.png",
+        "icon3.png",
+        "icon4.png",
+        "icon5.png",
+        "icon6.png",
       ];
       const rows = 4;
       const cols = 3;
+      const iconWidth = 100;
+      const iconHeight = 100;
       let draggedIcon = null;
 
       function handleDragStart(e) {
@@ -51,6 +53,12 @@
 
       function handleDragEnd(e) {
         e.target.classList.remove("dragging");
+        // Snap icon to nearest grid location
+        const iconRect = e.target.getBoundingClientRect();
+        const x = Math.round(iconRect.left / iconWidth) * iconWidth;
+        const y = Math.round(iconRect.top / iconHeight) * iconHeight;
+        e.target.style.left = `${x}px`;
+        e.target.style.top = `${y}px`;
       }
 
       for (let i = 0; i < rows; i++) {
@@ -60,7 +68,7 @@
         for (let j = 0; j < cols; j++) {
           const icon = document.createElement("img");
           const randomIcon = icons[Math.floor(Math.random() * icons.length)];
-          icon.src = randomIcon;
+          icon.src = `icons/${randomIcon}`;
           icon.classList.add("icon");
           icon.setAttribute("draggable", true);
           icon.addEventListener("dragstart", handleDragStart);
@@ -89,10 +97,14 @@
         width: 100px;
         height: 100px;
         margin: 10px;
+        outline: 2px solid black;
+        position: absolute;
+        z-index: 1;
       }
 
       .dragging {
         opacity: 0.5;
+        z-index: 2;
       }
     </style>
   </body>
